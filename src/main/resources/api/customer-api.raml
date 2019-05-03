@@ -1,0 +1,46 @@
+#%RAML 1.0
+title: Salesforce customer api
+baseUri: http://localhost:8081/sfdc
+
+/customers:
+  description: List of customers in Salesforce
+  get: 
+    description: Get a list of customer from Salesorce
+    queryParameters: 
+      orderBy: 
+        description: |
+          Order by field: firstName
+        type: string
+        required: false
+      order:
+        description: Order
+        enum: 
+          - desc
+          - asc
+        default: desc
+        required: false
+      offset:
+        description: Skip pver a number of elements by specifying an offset value
+        type: integer
+        required: false
+        example: 20
+        default: 0
+      limit: 
+        description: Limit the numbe of elemets on the response
+        type: integer
+        required: false
+        example: 80
+        default: 10
+    responses:
+      200:
+       description: 
+       body:
+         application/json:
+           example: |
+            {
+              "firstName" : "s",
+              "lastName"  : "p"
+              "email"     : "sunil.prasad@testmail.co.nz"
+            }
+             
+      
