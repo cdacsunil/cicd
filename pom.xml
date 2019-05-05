@@ -33,7 +33,7 @@
 					<username>${cloudhub-username}</username>
 					<password>${cloudhub-password}</password>
 					<redeploy>true</redeploy>
-					<environment>Production</environment>
+					<environment>Sandbox</environment>
 				</configuration>
 			</plugin>
 		<plugin>
