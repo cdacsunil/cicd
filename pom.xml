@@ -17,6 +17,7 @@
 		<app.runtime>4.1.4</app.runtime>
 		<mule.maven.plugin.version>3.2.3</mule.maven.plugin.version>
 		<munit.version>2.1.4</munit.version>
+		
 	</properties>
 
 	<build>
@@ -26,18 +27,34 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<configuration>
+				<!-- <configuration>
 					<skip>false</skip>
 					<deploymentType>cloudhub</deploymentType>
-					<!-- muleVersion is the runtime version as it appears on the CloudHub 
-						interface -->
+					muleVersion is the runtime version as it appears on the CloudHub 
+						interface
 					<muleVersion>4.1.4</muleVersion>
 					<workerType>Micro</workerType>
 					<username>${cloudhub-username}</username>
 					<password>${cloudhub-password}</password>
 					<redeploy>true</redeploy>
 					<environment>Sandbox</environment>
+				</configuration> -->
+
+				<configuration>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>4.1.4</muleVersion>
+						<username>${cloudhub-username}</username>
+						<password>${cloudhub-password}</password>
+						<applicationName>davanti-hello-ci-cd</applicationName>
+						<environment>Sandbox</environment>
+						<!-- <properties>
+							<key>value</key>
+						</properties> -->
+					</cloudHubDeployment>
 				</configuration>
+
+
 				<executions>
 					<execution>
 						<id>deploy</id>
