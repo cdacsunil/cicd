@@ -1,96 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.davanti</groupId>
 	<artifactId>davanti-hello-ci-cd</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-
 	<name>salesforce-customer-api</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-		<app.runtime>4.1.4</app.runtime>
+		<app.runtime>4.1.5</app.runtime>
+		<mule.version>4.1.5</mule.version>
+		<mule.tools.version>1.2</mule.tools.version>
 		<mule.maven.plugin.version>3.2.3</mule.maven.plugin.version>
 		<munit.version>2.1.4</munit.version>
-		
+    	<cloudHub.region>ap-southeast-2</cloudHub.region>
 	</properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.mule.tools.maven</groupId>
-				<artifactId>mule-maven-plugin</artifactId>
-				<version>${mule.maven.plugin.version}</version>
-				<extensions>true</extensions>
-				<!-- <configuration>
-					<skip>false</skip>
-					<deploymentType>cloudhub</deploymentType>
-					muleVersion is the runtime version as it appears on the CloudHub 
-						interface
-					<muleVersion>4.1.4</muleVersion>
-					<workerType>Micro</workerType>
-					<username>${cloudhub-username}</username>
-					<password>${cloudhub-password}</password>
-					<redeploy>true</redeploy>
-					<environment>Sandbox</environment>
-				</configuration> -->
-
-				<configuration>
-					<cloudHubDeployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>4.1.4</muleVersion>
-						<username>${cloudhub-username}</username>
-						<password>${cloudhub-password}</password>
-						<applicationName>davanti-hello-ci-cd</applicationName>
-						<environment>Sandbox</environment>
-						<!-- <properties>
-							<key>value</key>
-						</properties> -->
-					</cloudHubDeployment>
-				</configuration>
-
-
-				<executions>
-					<execution>
-						<id>deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.mulesoft.munit.tools</groupId>
-				<artifactId>munit-maven-plugin</artifactId>
-				<version>${munit.version}</version>
-				<executions>
-					<execution>
-						<id>test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-							<goal>coverage-report</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<coverage>
-						<runCoverage>true</runCoverage>
-						<formats>
-							<format>html</format>
-						</formats>
-					</coverage>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
@@ -132,7 +62,77 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<cloudHubDeployment>
+						<!-- muleVersion is the runtime version as it appears on the CloudHub interface -->
+						<muleVersion>${mule.version}</muleVersion>
+						<region>${cloudHub.region}</region>
+						<workers>${cloudHub.workers}</workers>
+						<workerType>${cloudHub.workerType}</workerType>
+						<username>${anypoint.account.username}</username>
+						<password>${anypoint.account.password}</password>
+						<businessGroup>${anypoint.account.businessGroup}</businessGroup>
+						<applicationName>${deploy.applicationName}</applicationName>
+						<environment>${anypoint.runtime.environment}</environment>
+						<properties>
+							<!-- <mule.env> determines the properties file to load -->
+							<mule.env>${mule.env}</mule.env>
+							<!-- You can add any other application properties according to your project's needs -->
+						</properties>
+					</cloudHubDeployment>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+				<version>${munit.version}</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+							<goal>coverage-report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<coverage>
+						<runCoverage>true</runCoverage>
+						<formats>
+							<format>html</format>
+						</formats>
+					</coverage>
+				</configuration>
+			</plugin> -->
+		</plugins>
+	</build>
+
+<!-- 	<repositories>
 		<repository>
 			<id>anypoint-exchange</id>
 			<name>Anypoint Exchange</name>
@@ -160,6 +160,31 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> -->
+	<repositories>
+          <repository>
+            <id>anypoint-exchange</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
